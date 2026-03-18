@@ -1,0 +1,280 @@
+﻿@model ActividadAutonoma.Models.PokemonDetail
+
+@{
+    ViewData["Title"] = Model.Name;
+    string GetTypeColor(string type)
+    {
+        var typeColors = new Dictionary<string, string>
+        {
+            {"normal", "#A8A878"}, {"fire", "#F08030"}, {"water", "#6890F0"},
+            {"electric", "#F8D030"}, {"grass", "#78C850"}, {"ice", "#98D8D8"},
+            {"fighting", "#C03028"}, {"poison", "#A040A0"}, {"ground", "#E0C068"},
+            {"flying", "#A890F0"}, {"psychic", "#F85888"}, {"bug", "#A8B820"},
+            {"rock", "#B8A038"}, {"ghost", "#705898"}, {"dragon", "#7038F8"},
+            {"dark", "#705848"}, {"steel", "#B8B8D0"}, {"fairy", "#EE99AC"}
+        };
+        return typeColors.ContainsKey(type) ? typeColors[type] : "#68A090";
+    }
+}
+
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h1 class="text-capitalize fw-bold display-4 text-gradient">@Model.Name</h1>
+        <p class="text-muted">#@Model.Id.ToString("000")</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Imágenes del Pokémon -->
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="@Model.Sprites?.Front_Default" 
+                             class="img-fluid pokemon-main-img" 
+                             alt="@Model.Name" 
+                             id="mainPokemonImage" />
+                    </div>
+                    
+                    <div class="text-center">
+                        <h5 class="mb-3">Sprites</h5>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Front_Default))
+                            {
+                                <img src="@Model.Sprites.Front_Default" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Front_Default')" 
+                                     alt="Front Default" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Back_Default))
+                            {
+                                <img src="@Model.Sprites.Back_Default" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Back_Default')" 
+                                     alt="Back Default" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Front_Shiny))
+                            {
+                                <img src="@Model.Sprites.Front_Shiny" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Front_Shiny')" 
+                                     alt="Front Shiny" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Back_Shiny))
+                            {
+                                <img src="@Model.Sprites.Back_Shiny" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Back_Shiny')" 
+                                     alt="Back Shiny" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Front_Female))
+                            {
+                                <img src="@Model.Sprites.Front_Female" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Front_Female')" 
+                                     alt="Front Female" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Sprites?.Back_Female))
+                            {
+                                <img src="@Model.Sprites.Back_Female" 
+                                     class="pokemon-thumb" 
+                                     onclick="changeImage('@Model.Sprites.Back_Female')" 
+                                     alt="Back Female" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del Pokémon -->
+        <div class="col-md-7">
+            <div class="card shadow-lg border-0 rounded-4 h-100">
+                <div class="card-body p-4">
+                    <!-- Tipos -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">Tipo</h5>
+                        <div class="d-flex gap-2">
+                            @foreach (var t in Model.Types)
+                            {
+                                <span class="badge text-capitalize px-3 py-2 fw-semibold" 
+                                      style="background-color: @GetTypeColor(t.Type.Name); color: white;">
+                                    @t.Type.Name
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Características físicas -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center bg-light p-3 rounded-3">
+                                <div class="bg-gradient rounded-circle p-3 me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 16 16">
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="mb-0 text-muted">Altura</p>
+                                    <h5 class="mb-0 fw-bold">@(Model.Height / 10.0)m</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center bg-light p-3 rounded-3">
+                                <div class="bg-gradient rounded-circle p-3 me-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="mb-0 text-muted">Peso</p>
+                                    <h5 class="mb-0 fw-bold">@(Model.Weight / 10.0)kg</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">Estadísticas</h5>
+                        @foreach (var s in Model.Stats)
+                        {
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-capitalize">@s.Stat.Name</span>
+                                    <span class="fw-bold">@s.Base_Stat</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-gradient" 
+                                         role="progressbar" 
+                                         style="width: @(Math.Min(s.Base_Stat, 150) / 150.0 * 100)%;" 
+                                         aria-valuenow="@s.Base_Stat" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="150"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Habilidades -->
+                    @if (Model.Abilities != null && Model.Abilities.Count > 0)
+                    {
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">Habilidades</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var a in Model.Abilities)
+                                {
+                                    <span class="badge bg-light text-dark text-capitalize px-3 py-2">
+                                        @a.Ability.Name
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Botón de regreso -->
+                    <div class="text-center mt-4">
+                        <a href="@Url.Action("Index", "Poke")" class="btn btn-gradient btn-lg px-4 py-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" class="me-2">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                            </svg>
+                            Volver a la lista
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function changeImage(src) {
+            document.getElementById('mainPokemonImage').src = src;
+            
+            // Agregar efecto de animación
+            const img = document.getElementById('mainPokemonImage');
+            img.classList.add('image-change');
+            setTimeout(() => {
+                img.classList.remove('image-change');
+            }, 500);
+        }
+    </script>
+}
+
+<style>
+    .text-gradient {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bg-gradient {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(90deg, #ff4b2b, #ff416c);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .pokemon-main-img {
+        height: 250px;
+        object-fit: contain;
+        transition: all 0.5s ease;
+    }
+
+    .pokemon-thumb {
+        height: 60px;
+        width: 60px;
+        object-fit: contain;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        padding: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .pokemon-thumb:hover {
+        border-color: #ff4b2b;
+        transform: scale(1.1);
+    }
+
+    .image-change {
+        animation: imagePop 0.5s ease;
+    }
+
+    @@keyframes imagePop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .progress {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        border-radius: 10px;
+        transition: width 1s ease-in-out;
+    }
+</style>

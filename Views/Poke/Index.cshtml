@@ -1,0 +1,131 @@
+﻿@model ActividadAutonoma.Models.ListaOriginal
+
+@{
+    ViewData["Title"] = "Pokémon";
+    int currentPage = ViewData["Page"] != null ? (int)ViewData["Page"] : 1;
+    int totalPages = ViewData["TotalPages"] != null ? (int)ViewData["TotalPages"] : 1;
+    
+    // Calcular páginas para mostrar (máximo 5 páginas en la navegación)
+    int startPage = Math.Max(1, currentPage - 2);
+    int endPage = Math.Min(totalPages, startPage + 4);
+    
+    // Ajustar si estamos cerca del final
+    if (endPage - startPage < 4 && startPage > 1)
+    {
+        startPage = Math.Max(1, endPage - 4);
+    }
+}
+
+<h2 class="text-center fw-bold text-gradient mb-5">Lista de Pokémon</h2>
+
+<div class="row">
+    @foreach (var pokemon in Model.Results)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-4 h-100">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/@(GetPokemonId(pokemon.Url)).png"
+                     class="card-img-top p-3" alt="@pokemon.Name" style="height: 150px; object-fit: contain;" />
+                <div class="card-body text-center">
+                    <h5 class="card-title text-capitalize fw-semibold">@pokemon.Name</h5>
+                    <a href="@Url.Action("Detalles", "Poke", new { id = GetPokemonId(pokemon.Url) })"
+                       class="btn btn-gradient btn-sm px-3">
+                        Ver detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            @* Botón anterior *@
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Poke", new { page = currentPage - 1 })">&laquo; Anterior</a>
+            </li>
+
+            @* Primera página *@
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Poke", new { page = 1 })">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+
+            @* Mostrar páginas *@
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Poke", new { page = i })">@i</a>
+                </li>
+            }
+
+            @* Última página *@
+            @if (endPage < totalPages)
+            {
+                @if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Poke", new { page = totalPages })">@totalPages</a>
+                </li>
+            }
+
+            @* Botón siguiente *@
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", "Poke", new { page = currentPage + 1 })">Siguiente &raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<style>
+    .text-gradient {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: white;
+        border: none;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(90deg, #ff4b2b, #ff416c);
+        color: white;
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .page-item.active .page-link {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        border-color: #ff4b2b;
+    }
+</style>
+
+@functions {
+    private int GetPokemonId(string url)
+    {
+        var parts = url.TrimEnd('/').Split('/');
+        return int.Parse(parts[^1]);
+    }
+}

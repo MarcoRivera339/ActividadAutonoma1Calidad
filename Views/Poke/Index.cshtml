@@ -91,35 +91,83 @@
 }
 
 <style>
-    .text-gradient {
-        background: linear-gradient(90deg, #ff416c, #ff4b2b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+body {
+    background: #0f172a;
+}
 
-    .btn-gradient {
-        background: linear-gradient(90deg, #ff416c, #ff4b2b);
-        color: white;
-        border: none;
-    }
+/* Título */
+.text-gradient {
+    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(56,189,248,0.6);
+}
 
-    .btn-gradient:hover {
-        background: linear-gradient(90deg, #ff4b2b, #ff416c);
-        color: white;
-    }
+/* Cards */
+.card {
+    background: #1e293b;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
 
-    .card {
-        transition: transform 0.2s ease-in-out;
-    }
+.card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 0 20px rgba(56,189,248,0.4);
+}
 
-    .card:hover {
-        transform: scale(1.03);
-    }
+/* Imagen */
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+.card-img-top:hover {
+    transform: scale(1.1) rotate(2deg);
+}
 
-    .page-item.active .page-link {
-        background: linear-gradient(90deg, #ff416c, #ff4b2b);
-        border-color: #ff4b2b;
-    }
+/* Texto */
+.card-title {
+    color: #e2e8f0;
+}
+
+/* Botón */
+.btn-gradient {
+    background: #0ea5e9;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-gradient:hover {
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+}
+
+/* Paginación */
+.page-link {
+    background: #1e293b;
+    color: #cbd5f5;
+    border: 1px solid #334155;
+    transition: 0.3s;
+}
+
+.page-link:hover {
+    background: #0ea5e9;
+    color: white;
+}
+
+.page-item.active .page-link {
+    background: #38bdf8;
+    border-color: #38bdf8;
+    color: white;
+    box-shadow: 0 0 8px #38bdf8;
+}
+
+.page-item.disabled .page-link {
+    background: #020617;
+    color: #64748b;
+}
 </style>
 
 @functions {
